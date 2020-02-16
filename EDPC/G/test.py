@@ -13,26 +13,32 @@ class TestClass(unittest.TestCase):
         sys.stdout, sys.stdin = stdout, stdin
         self.assertEqual(out, output)
     def test_入力例_1(self):
-        input = """3 8
-3 30
-4 50
-5 60"""
-        output = """90"""
+        input = """4 5
+1 2
+1 3
+3 2
+2 4
+3 4"""
+        output = """3"""
         self.assertIO(input, output)
     def test_入力例_2(self):
-        input = """1 1000000000
-1000000000 10"""
-        output = """10"""
+        input = """6 3
+2 3
+4 5
+5 6"""
+        output = """2"""
         self.assertIO(input, output)
     def test_入力例_3(self):
-        input = """6 15
-6 5
-5 6
-6 4
-6 6
-3 5
-7 2"""
-        output = """17"""
+        input = """5 8
+5 3
+2 3
+2 4
+5 2
+5 1
+1 4
+4 3
+1 3"""
+        output = """3"""
         self.assertIO(input, output)
 
 if __name__ == "__main__":
