@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 numpy = "==1.8.2"
 scipy = "==0.13.3"
+pypy3 = "*"
+pypy = "*"
 
 [requires]
 python_version = "3.4"
