@@ -1,51 +1,52 @@
 import copy
 from functools import lru_cache
+import numpy as np
+from numba import njit
+
+#@njit
+# @njit('(i8[::1],)', cache=True)
+# def func(A):
+#     N = len(A)
+#     B = np.zeros_like(A)
+#     for i in range(N):
+#         l = max(0, i - A[i])
+#         r = min(i + A[i], N-1)
+#         B[l] += 1
+#         if r+1 < N:
+#             B[r+1] -= 1
+
+#     B = np.cumsum(B)
+#     return B
+
 def resolve():
-    #N, K = map(int, input().split())
-    #A = list(map(int, input().split()))
+    N, K = map(int, input().split())
+    A = np.array(list(map(int, input().split())))
 
-    N = 20000
-    K = 20000
-    A = [0] * N
+    # N = 2 * 10**5
+    # K = 2 * 10**5
+    # A = np.array([0] *  N)
 
-    cut_mode = False
-    
-    if cut_mode and K + min(A) >= N:
-        print(" ".join(map(str, [N]*N)))
-        return
+    @njit
+    def func(A):
+        #N = len(A)
+        B = np.zeros_like(A)
+        for i in range(N):
+            l = max(0, i - A[i])
+            r = min(i + A[i], N-1)
+            B[l] += 1
+            if r+1 < N:
+                B[r+1] -= 1
 
-    @lru_cache(maxsize=100000)
-    def func(i, a):
-        A_tmp = [0] * len(A)
-        #print(A_tmp[i:i+a+1])
-        A_tmp[i:i+a+1] = [1]*(len(A_tmp[i:i+a+1]))
-
-        #print(A_tmp[i-a:i+1])
-        A_tmp[max(0, i-a):i+1] = [1]*(len(A_tmp[max(0, i-a):i+1]))
-        
-        #print(A_tmp)
-        return A_tmp
-
+        B = np.cumsum(B)
+        return B
 
     for k in range(K):
-        #print("i", i)
-        A_next = [0] * len(A)
-        for i, a in enumerate(A):
-            #print(i, a)
-            A_tmp = func(i, a)
-            #print("A_tmp", A_tmp)
-            A_next = [x + y for (x, y) in zip(A_next, A_tmp)]
-            #print("A_next", A_next)
+        #print(k)
+        A = func(A)
+        if k >= 50:
+            break
 
-        A = copy.deepcopy(A_next)
-        #print("new A: ", A)
-
-        print("k", k, "min(A)", min(A))
-
-        if cut_mode and min(A) == N:
-            break 
-
-    print(" ".join(map(str, A_next)))
+    print(" ".join(map(str, A)))
 
 if __name__ == "__main__":
     resolve()
